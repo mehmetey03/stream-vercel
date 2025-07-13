@@ -1,7 +1,11 @@
 {
-  "name": "stream-vercel",
+  "name": "puppeteer-m3u8-fetcher",
   "version": "1.0.0",
+  "main": "api/fetchStream.js",
   "dependencies": {
-    "puppeteer": "^20.9.0"
+    "puppeteer": "^21.0.0"
+  },
+  "scripts": {
+    "start": "node api/fetchStream.js"
   }
 }
