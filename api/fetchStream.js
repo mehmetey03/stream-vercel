@@ -4,7 +4,10 @@ module.exports = async (req, res) => {
   const { id = '5062' } = req.query;
   
   if (!id.match(/^\d+$/)) {
-    return res.status(400).send('Invalid ID parameter');
+    return res.status(400).json({ 
+      success: false,
+      message: 'Geçersiz ID parametresi. Sadece sayı kabul edilir.'
+    });
   }
 
   const url = `https://macizlevip315.shop/wp-content/themes/ikisifirbirdokuz/match-center.php?id=${id}`;
@@ -42,11 +45,9 @@ module.exports = async (req, res) => {
       timeout: 30000
     });
     
-    // Wait for potential dynamic content loading
     await new Promise(resolve => setTimeout(resolve, 5000));
     
     if (!m3u8Url) {
-      // Fallback: Try to find the URL in page content if not caught by response listener
       const pageContent = await page.content();
       const urlMatch = pageContent.match(/(https?:\/\/[^\s]+\.m3u8[^\s]*chunklist[^\s]*)/i);
       if (urlMatch) {
@@ -63,15 +64,15 @@ module.exports = async (req, res) => {
     } else {
       res.status(404).json({ 
         success: false,
-        message: 'm3u8 stream URL not found',
+        message: 'm3u8 yayın URLsi bulunamadı',
         id: id
       });
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Hata:', error);
     res.status(500).json({ 
       success: false,
-      message: 'Error: ' + error.message,
+      message: 'Hata: ' + error.message,
       id: id
     });
   } finally {
